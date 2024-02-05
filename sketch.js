@@ -43,22 +43,38 @@ function drawGrid(spacing, grid){
 
 function draw() {
   background(255);
+  
+  
   //write the horizontal hints
+  textSize(spaced/2)
+  textFont('Cutive Mono');
   fill(0)
   
   for(let i = 0; i<vert; i++){
-    let hint_as_string = "";
-
     if(horizontal_hints[i].length == 0){
-      text("0", 50, 165+i*spaced)
+      text("0", 135, 150+i*spaced + spaced/2)
     }else{
       //hint_as_string = hint_as_string.concat(horizontal_hints[i][0].toString());
       for(let j = 0; j<horizontal_hints[i].length; j++){
-        text(horizontal_hints[i][j].toString().concat(", "), 50+j*20, 165+i*spaced)
+        text(horizontal_hints[i][horizontal_hints[i].length-j-1], 135-j*(spaced/1.5), 150+i*spaced + spaced/2)
       }
     }
-    //text(hint_as_string, 50+j*25, 165+i*spaced)
+    
   }
+
+  //write the vertical hints
+  for(let i = 0; i<hor; i++){
+    if(vertical_hints[i].length == 0){
+      text("0", 150+i*spaced + spaced/2, 135)
+    }else{
+      //hint_as_string = hint_as_string.concat(horizontal_hints[i][0].toString());
+      for(let j = 0; j<vertical_hints[i].length; j++){
+        text(vertical_hints[i][vertical_hints[i].length-j-1], 150+i*spaced + spaced/2, 135-j*(spaced/1.5))
+      }
+    }
+    
+  }
+
 
   for(let i = 0; i<vert; i++){
     for(let j=0; j<hor; j++){
@@ -74,6 +90,17 @@ function draw() {
 }
 
 function mousePressed(){
+  //console.log(mouseX);
+  if(mouseY > 150 && mouseX > 150 && mouseY < spaced*vert+150 && mouseX < spaced*hor+150){
+    hidden_board[Math.floor((mouseY-150)/spaced)][Math.floor((mouseX-150)/spaced)] = 1;
+  }
+  horizontal_hints = createHorizontalHints(hidden_board);
+  vertical_hints = createVerticalHints(hidden_board);
+  console.log(horizontal_hints);
+  //console.log(vertical_hints);
+}
+
+function mouseDragged(){
   //console.log(mouseX);
   if(mouseY > 150 && mouseX > 150 && mouseY < spaced*vert+150 && mouseX < spaced*hor+150){
     hidden_board[Math.floor((mouseY-150)/spaced)][Math.floor((mouseX-150)/spaced)] = 1;
